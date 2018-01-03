@@ -1,0 +1,23 @@
+<annotation filename="pens-0.jpg">
+    <folder>new-pens</folder>
+    <filename filename="pens-0.jpg">pens-0.jpg</filename>
+    <size>
+        <width>700</width>
+        <height>525</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>pen</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <occluded>0</occluded>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>19</xmin>
+            <ymin>90</ymin>
+            <xmax>484</xmax>
+            <ymax>525</ymax>
+        </bndbox>
+    </object>
+</annotation>
