@@ -12,7 +12,7 @@ def rename_files(path_to_files: str, path_to_save: str, name_prefix="image"):
         name_prefix: New name prefix of the images.
 
     """
-    files = glob.glob("%s/*.jpg" % path_to_files)
+    files = glob.glob("%s/*" % path_to_files)
     random.shuffle(files)
     for i in range(0, len(files)):
         os.rename(files[i], os.path.join(path_to_save, name_prefix + "-" + str(i) + ".jpg"))

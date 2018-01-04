@@ -10,7 +10,7 @@ import random
 
 class _Image(NamedTuple):
     """
-    Inherited class from NamedTuple, used to store all info about a image (height, width, annotations...)
+    Inherited class from NamedTuple, used to store all info about a image (filename, height, width, annotations...)
     """
     filename: str
     info: pd.DataFrame
@@ -70,7 +70,17 @@ def _tf_format(image: _Image, path_to_images: str) -> tensorflow.train.Example:
     return tf_example
 
 
-def _group_image(df: pd.DataFrame, by: str) -> List[_Image]:
+def _group_image(df: pd.DataFrame, by="filename") -> List[_Image]:
+    """
+    Read from a DataFrame and group rows which have a common column value.
+    Args:
+        df: The DataFrame to group.
+        by: The column to group by.
+
+    Returns:
+        List[_Image]: A list of _Image, which represents all the info of a image (filename, annotations, size...)
+
+    """
     gb = df.groupby(by)
     return [_Image(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
 
@@ -81,16 +91,16 @@ def create_tf_records(path_to_annotations: str, path_to_tf_records: str, path_to
     Args:
         path_to_annotations: Path to csv file containing annotations.
         path_to_tf_records: Path to store the two tfrecord files (train and eval).
+        path_to_images: Path to all the images.
         train_proportion: Proportion of images use for training.
-
 
     """
     annotations = pd.read_csv(path_to_annotations)
 
-    train_writer = tensorflow.python_io.TFRecordWriter(os.path.join(path_to_tf_records, "train.record"))
-    eval_writer = tensorflow.python_io.TFRecordWriter(os.path.join(path_to_tf_records, "eval.record"))
+    train_writer = tensorflow.python_io.TFRecordWriter(os.path.join(path_to_tf_records, "train", "train.record"))
+    eval_writer = tensorflow.python_io.TFRecordWriter(os.path.join(path_to_tf_records, "eval", "eval.record"))
 
-    images = _group_image(annotations, by="filename")
+    images = _group_image(annotations)
     print("%s images" % len(images))
 
     random.shuffle(images)
@@ -116,6 +126,6 @@ def create_tf_records(path_to_annotations: str, path_to_tf_records: str, path_to
 if __name__ == "__main__":
     print(os.getcwd())
     create_tf_records("../dataset/annotations.csv",
-                      "../dataset/tf-records",
+                      "../data",
                       "../dataset/renamed-images",
                       train_proportion=0.8)
