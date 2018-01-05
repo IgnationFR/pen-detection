@@ -121,18 +121,13 @@ train_input_reader: {
 
 Run the following command to start the training:
 ```
-python PATH_TO_OBJECT_DETECTION_FOLDER/research/object_detection/train.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
+python PATH_TO_OBJECT_DETECTION_FOLDER/models/research/object_detection/train.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
 ig --train_dir=model/train
 ```
+Note that, this command run for unlimited number of epochs (one epoch = the whole dataset gone through the network once).
 
-### Evaluation
-
-Run the following command to start the training:
-```
-python PATH_TO_OBJECT_DETECTION_FOLDER/research/object_detection/eval.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
-g --eval_dir=model/eval --checkpoint_dir=model/train
-```
-
+At certain time, the program saves the state of the learning with the same 3 files as above (model.ckpt-50...). So, if you stops the learning it you restart at the last checkpoint.
+ 
 ### Monitor the training
 
 To monitor the training run this:
@@ -140,6 +135,25 @@ To monitor the training run this:
 tensorboard --logdir=model
 ```
 
-And visit [localhost:6006](http://localhost:6006)
+And visit [localhost:6006](http://localhost:6006) to see how your training goes. There is a lot of graphs and variables you can observe. I recommend to follow the Total Loss value in the scalars tab.
+Make sure this value is decreasing. If the training goes well, it should look like this:
+![alt text](example/TotalLoss.png)
+
+
+### Evaluation
+
+In another terminal, during the learning you can observe how goes your model on the eval dataset.
+Run the following command to start the evaluation:
+```
+python PATH_TO_OBJECT_DETECTION_FOLDER/models/research/object_detection/eval.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
+g --eval_dir=model/eval --checkpoint_dir=model/train
+```
+Note that, the command prints nothing, it creates output file id model/eval. To see the results of the evaluation go on your Tensorboard. 
+A new scalar should appears, it's called PASCAL. The graphs show the mean Average Precision calculated as described in the PASCAL VOC Challenge.
+Without going into details, it evaluates the precision of your model, the higher is the bette.
+
+The value should increase over the steps (epochs).
+![alt text](example/PASCAL-mAP.png)
+
 
 
