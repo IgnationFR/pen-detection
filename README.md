@@ -156,4 +156,9 @@ The value should increase over the steps (epochs).
 ![alt text](example/PASCAL-mAP.png)
 
 
+## Thanking
+
+Thanks to the work of Dat Tran on [raccoon detector](https://towardsdatascience.com/how-to-train-your-own-object-detector-with-tensorflows-object-detector-api-bec72ecfe1d9).
+
+
 
