@@ -146,7 +146,7 @@ Make sure this value is decreasing. If the training goes well, it should look li
 In another terminal, during the learning you can observe how goes your model on the eval dataset.
 Run the following command to start the evaluation:
 ```
-python PATH_TO_OBJECT_DETECTION_FOLDER/models/research/object_detection/eval.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
+python3 PATH_TO_OBJECT_DETECTION_FOLDER/models/research/object_detection/eval.py --logtostderr --pipeline_config_path=model/train/YOUR_CONFIG_FILE
 g --eval_dir=model/eval --checkpoint_dir=model/train
 ```
 Note that, the command prints nothing, it creates output file in the folder model/eval. To see the results of the evaluation go on your Tensorboard. 
@@ -156,6 +156,33 @@ Without going into details, it evaluates the precision of your model, the higher
 The value should increase over the steps (epochs).
 ![alt text](example/PASCAL-mAP.png)
 
+
+### Export the model
+
+Once you got the result on the evaluation set you want, you can stop the training and the evaluation processes.
+To use your model you need to export it to a Tensorflow graph proto.
+
+To export it, use the following command:
+```
+python3 PATH_TO_OBJECT_DETECTION_FOLDER/models/object_detection/export_inference_graph.py \
+    --input_type image_tensor \
+    --pipeline_config_path model/train/YOUR_CONFIG_FILE \
+    --trained_checkpoint_prefix model/train \
+    --output_directory model/output_inference_graph.pb
+```
+
+Now you should have a new file named "output_inference_graph.pb" that contains your trained model.
+
+
+### Run model on images
+
+Now that you have a Tensorflow graph proto file, you can load it and run predictions on images to see the results of your training.
+Put images you want to test in data/test/. No need for annotations. Then run:
+
+```
+python3 predict.py
+```
+The results of the prediction should be in model/test. The results take the form of images with labelled boxes drawn on detected objects.
 
 ## Thanking
 
