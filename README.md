@@ -162,16 +162,21 @@ The value should increase over the steps (epochs).
 Once you got the result on the evaluation set you want, you can stop the training and the evaluation processes.
 To use your model you need to export it to a Tensorflow graph proto.
 
-To export it, use the following command:
+To export it, use the following commands:
 ```
+mkdir models/output_inference_graph
+````
+
+``
 python3 PATH_TO_OBJECT_DETECTION_FOLDER/models/object_detection/export_inference_graph.py \
     --input_type image_tensor \
     --pipeline_config_path model/train/YOUR_CONFIG_FILE \
     --trained_checkpoint_prefix model/train \
-    --output_directory model/output_inference_graph.pb
+    --output_directory model/output_inference_graph
 ```
 
-Now you should have a new file named "output_inference_graph.pb" that contains your trained model.
+Now in model/output_inference_graph/ you should find the several files that look like the ones you downloaded from Object Detection API.
+The file we need for prediction is frozen_inference_graph.pb.
 
 
 ### Run model on images

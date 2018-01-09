@@ -31,7 +31,7 @@ def predict(images_path: str, results_path: str):
         results_path: Path where to save the result images.
 
     """
-    inference_graph_path = os.path.join("model", "frozen_inference_graph.pb")
+    inference_graph_path = os.path.join("model", "output_inference_graph", "frozen_inference_graph.pb")
     label_map_path = os.path.join("data", "label_map.pbtxt")
     num_class = 1
 
@@ -53,7 +53,7 @@ def predict(images_path: str, results_path: str):
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
             image_tensor = detection_graph.get_tensor_by_name("image_tensor:0")
-            fetches = [
+            tensors = [
                 image_tensor,
                 detection_graph.get_tensor_by_name("detection_boxes:0"),
                 detection_graph.get_tensor_by_name("detection_scores:0"),
@@ -69,7 +69,7 @@ def predict(images_path: str, results_path: str):
                 start = datetime.datetime.now()
 
                 (boxes, scores, classes, num) = sess.run(
-                    fetches,
+                    fetches=tensors,
                     feed_dict={image_tensor: image_np_expanded})
                 print("took %s ms" % (start - datetime.datetime.now()).microseconds)
 
