@@ -1,6 +1,6 @@
 from typing import List, NamedTuple
 from object_detection.core.standard_fields import TfExampleFields
-from object_detection.utils import dataset_util
+from object_detection.utils import dataset_util, label_map_util
 import tensorflow as tf
 import tensorflow
 import pandas as pd
@@ -16,9 +16,15 @@ class _Image(NamedTuple):
     info: pd.DataFrame
 
 
-def _class_text_to_int(row_label: str):
-    if row_label == "pen":
-        return 1
+def _class_text_to_int(class_name: str):
+    label_map_path = os.path.join("..", "data", "label_map.pbtxt")
+    label_map = label_map_util.load_labelmap(label_map_path)
+    categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=100, use_display_name=True)
+
+    for category in categories:
+        if category["name"] == class_name:
+            return category["id"]
+    raise ValueError("No item with name %s in the label map." % class_name)
 
 
 def _tf_format(image: _Image, path_to_images: str) -> tensorflow.train.Example:

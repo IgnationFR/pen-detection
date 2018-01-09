@@ -3,7 +3,7 @@ import glob
 import os
 
 
-def resize_images(path_to_images, max_width=680):
+def resize_images(path_to_images, max_width=1024):
     """ Resize image above a certain width.
 
     Args:

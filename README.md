@@ -78,13 +78,14 @@ Now you should have two new files:
 
 ### Create the label map
 
-First, create the file data/label_map.pbtxt that contains the following lines:
+First, open the file data/label_map.pbtxt that contains the following lines:
 ```
 item {
   id: 1
   name: 'pen'
 }
 ``` 
+Change or add the class you wand to learn.
 Make sure you start the id at 1, and increment as you need.
 
 ### Choose a model
@@ -162,10 +163,7 @@ The value should increase over the steps (epochs).
 Once you got the result on the evaluation set you want, you can stop the training and the evaluation processes.
 To use your model you need to export it to a Tensorflow graph proto.
 
-To export it, use the following commands:
-```
-mkdir models/output_inference_graph
-````
+To export it, use the following command:
 
 ``
 python3 PATH_TO_OBJECT_DETECTION_FOLDER/models/object_detection/export_inference_graph.py \

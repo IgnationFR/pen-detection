@@ -46,20 +46,18 @@ def predict(images_path: str, results_path: str):
     label_map = label_map_util.load_labelmap(label_map_path)
     categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=num_class,
                                                                 use_display_name=True)
+    print(categories)
     category_index = label_map_util.create_category_index(categories)
 
-    test_images = glob.glob(images_path + "*.jpg")
+    test_images = glob.glob(images_path + "/*.jpg")
 
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
             image_tensor = detection_graph.get_tensor_by_name("image_tensor:0")
-            tensors = [
-                image_tensor,
-                detection_graph.get_tensor_by_name("detection_boxes:0"),
-                detection_graph.get_tensor_by_name("detection_scores:0"),
-                detection_graph.get_tensor_by_name("detection_classes:0"),
-                detection_graph.get_tensor_by_name("num_detections:0"),
-            ]
+            detection_boxes = detection_graph.get_tensor_by_name("detection_boxes:0")
+            detection_scores = detection_graph.get_tensor_by_name("detection_scores:0")
+            detection_classes = detection_graph.get_tensor_by_name("detection_classes:0")
+            num_detections = detection_graph.get_tensor_by_name("num_detections:0")
 
             for image_path in test_images:
                 image = Image.open(image_path)
@@ -69,7 +67,7 @@ def predict(images_path: str, results_path: str):
                 start = datetime.datetime.now()
 
                 (boxes, scores, classes, num) = sess.run(
-                    fetches=tensors,
+                    fetches=[detection_boxes, detection_scores, detection_classes, num_detections],
                     feed_dict={image_tensor: image_np_expanded})
                 print("took %s ms" % (start - datetime.datetime.now()).microseconds)
 

@@ -22,4 +22,4 @@ def rename_files(path_to_files: str, path_to_save: str, name_prefix="image"):
 if __name__ == '__main__':
     image_path = os.path.join(os.getcwd(), 'dataset/images')
     new_image_path = os.path.join(os.getcwd(), 'dataset/renamed-images')
-    rename_files(image_path, new_image_path, name_prefix="pens")
+    rename_files(image_path, new_image_path, name_prefix="image")
