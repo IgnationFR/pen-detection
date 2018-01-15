@@ -165,7 +165,7 @@ To use your model you need to export it to a Tensorflow graph proto.
 
 To export it, use the following command:
 
-``
+```
 python3 PATH_TO_OBJECT_DETECTION_FOLDER/models/object_detection/export_inference_graph.py \
     --input_type image_tensor \
     --pipeline_config_path model/train/YOUR_CONFIG_FILE \
